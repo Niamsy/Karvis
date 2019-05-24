@@ -92,10 +92,10 @@ let response;
 
   // Check if the message contains text
   if (received_message.text) {    
-	JSON.stringify(received_message.nlp.entities);
+	
     // Create the payload for a basic text message
     response = {
-      "text": JSON.stringify(received_message.nlp.entities);
+      "text": JSON.stringify(received_message.nlp.entities)
     }
   }  
   
