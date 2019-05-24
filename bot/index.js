@@ -1,9 +1,11 @@
 'use strict';
-
 // Imports dependencies and set up http server
+
+const fnc = require("./app.js");
+
 const
   express = require('express'),
-  request = require('request');
+  request = require('request'),
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()); // creates express http server
 
@@ -29,13 +31,12 @@ app.post('/webhook', (req, res) => {
   // Get the sender PSID
   let sender_psid = webhook_event.sender.id;
   console.log('Sender PSID: ' + sender_psid);
-
   // Check if the event is a message or postback and
   // pass the event to the appropriate handler function
   if (webhook_event.message) {
-    handleMessage(sender_psid, webhook_event.message);        
+    fnc.handleMessage(sender_psid, webhook_event.message);        
   } else if (webhook_event.postback) {
-    handlePostback(sender_psid, webhook_event.postback);
+    fnc.handlePostback(sender_psid, webhook_event.postback);
   }
       
     });
