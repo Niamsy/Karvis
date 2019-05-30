@@ -148,7 +148,7 @@ async function asyncFunction() {
   let conn;
   try {
     conn = await pool.getConnection();
-    const tables = await conn.query("SHOW TABLES");
+    const tables = await conn.query("SELECT keywords FROM informations");
     console.log("TABLES ARE" + tables);
  
   } catch (err) {
