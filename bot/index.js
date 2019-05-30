@@ -1,14 +1,11 @@
 'use strict';
 // Imports dependencies and set up http server
 
-const hub = require('hub');
-const express = require('express');
-const request = require('request');
-const bodyParser = require('body-parser');
-
-const app = express().use(bodyParser.json()); // creates express http server
-
-hub.connectedUsersEntities = [];
+const
+  express = require('express'),
+  request = require('request'),
+  bodyParser = require('body-parser'),
+  app = express().use(bodyParser.json()); // creates express http server
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -90,19 +87,15 @@ const PAGE_ACCESS_TOKEN = "EAAGkxCViuiYBADNKz5hiFJoat4fjV5ZAZBeLiR1gY7iA7eoBv2WW
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
+	asyncFunction();
+let response;
 
-  if (hub.connectedUsersEntities[sender_psid] == null) {
-    hub.connectedUsersEntities[sender_psid] = received_message.nlp.entities;
-  } else {
-    console.log("Known user with entities: " + JSON.stringify(hub.connectedUsersEntities[sender_psid]));
-      // TODO: Add entities
-  }
-
-  let response;
-  if (received_message.text) {
+  // Check if the message contains text
+  if (received_message.text) {    
+	JSON.stringify(received_message.nlp.entities);
     // Create the payload for a basic text message
     response = {
-      "text": JSON.stringify(received_message.nlp.entities)
+      "text": JSON.stringify(received_message.nlp.entities);
     }
   }  
   
@@ -138,4 +131,21 @@ function callSendAPI(sender_psid, response) {
       console.error("Unable to send message:" + err);
     }
   }); 
+}
+
+const mariadb = require('mariadb');
+const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh', connectionLimit: 5});
+ 
+async function asyncFunction() {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const tables = await conn.query("SHOW TABLES");
+    console.log(tables);
+ 
+  } catch (err) {
+    throw err;
+  } finally {
+    if (conn) return conn.end();
+  }
 }
