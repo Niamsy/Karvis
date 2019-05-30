@@ -144,6 +144,7 @@ const mariadb = require('mariadb');
 const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh',  connectionLimit: 5});
 
 async function asyncFunction() {
+	console.log("Beginning of MariaDB fnc");
   let conn;
   try {
     conn = await pool.getConnection();
