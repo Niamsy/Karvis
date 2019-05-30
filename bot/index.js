@@ -1,6 +1,9 @@
 'use strict';
 // Imports dependencies and set up http server
 
+const mariadb = require('mariadb');
+const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh', connectionLimit: 5});
+
 const
   express = require('express'),
   request = require('request'),
@@ -87,7 +90,7 @@ const PAGE_ACCESS_TOKEN = "EAAGkxCViuiYBADNKz5hiFJoat4fjV5ZAZBeLiR1gY7iA7eoBv2WW
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
-	asyncFunction();
+	//asyncFunction();
 let response;
 
   // Check if the message contains text
@@ -132,9 +135,6 @@ function callSendAPI(sender_psid, response) {
     }
   }); 
 }
-
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh', connectionLimit: 5});
  
 async function asyncFunction() {
   let conn;
