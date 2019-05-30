@@ -102,9 +102,9 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {
     // Create the payload for a basic text message
 	
-	var tables = asyncFunction();
+	var tables = await asyncFunction();
 console.log(received_message.nlp.entities.intent[0].value);
- if (tables[2].keywords.tags.indexOf(received_message.nlp.entities.intent[0].value)!= -1)
+ if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value)!= -1)
  {
     response = {
       "text": JSON.stringify(tables[2].details)
