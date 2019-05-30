@@ -102,7 +102,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {
     // Create the payload for a basic text message
 	
-	var tables = await asyncFunction();
+	var tables = asyncFunction();
 console.log(received_message.nlp.entities.intent[0].value);
  if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value)!= -1)
  {
@@ -149,12 +149,12 @@ function callSendAPI(sender_psid, response) {
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh',  connectionLimit: 5, database: 'karvis'});
 
-async function asyncFunction() {
+function asyncFunction() {
 	console.log("Beginning of MariaDB fnc");
   let conn;
   try {
-    conn = await pool.getConnection();
-    const tables = await conn.query("SELECT * FROM informations");
+    conn = pool.getConnection();
+    const tables = conn.query("SELECT * FROM informations");
     console.log(tables);
 	
   } catch (err) {
