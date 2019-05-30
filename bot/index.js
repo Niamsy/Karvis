@@ -141,7 +141,7 @@ function callSendAPI(sender_psid, response) {
 }
 
 const mariadb = require('mariadb');
-const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42s',  connectionLimit: 5});
+const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh',  connectionLimit: 5, database: 'karvis'});
 
 async function asyncFunction() {
 	console.log("Beginning of MariaDB fnc");
