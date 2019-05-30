@@ -90,7 +90,7 @@ const PAGE_ACCESS_TOKEN = "EAAGkxCViuiYBADNKz5hiFJoat4fjV5ZAZBeLiR1gY7iA7eoBv2WW
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
-asyncFunction();
+
   if (hub.connectedUsersEntities[sender_psid] == null) {
     hub.connectedUsersEntities[sender_psid] = received_message.nlp.entities;
   } else {
@@ -101,9 +101,15 @@ asyncFunction();
   let response;
   if (received_message.text) {
     // Create the payload for a basic text message
+	
+	var tables = JSON.parse(asyncFunction());
+console.log(received_message.nlp.entities.intent[0].value);
+ if (tables[2].keywords.tags.indexOf(received_message.nlp.entities.intent[0].value)!= -1)
+ {
     response = {
-      "text": JSON.stringify(received_message.nlp.entities)
+      "text": JSON.stringify(tables[2].details)
     }
+  }
   }  
   
   // Sends the response message
@@ -148,12 +154,16 @@ async function asyncFunction() {
   let conn;
   try {
     conn = await pool.getConnection();
-    const tables = await conn.query("SELECT keywords FROM informations");
+    const tables = await conn.query("SELECT * FROM informations");
     console.log(tables);
- 
+	
   } catch (err) {
     throw err;
   } finally {
-    if (conn) return conn.end();
+    if (conn) 
+	{
+		conn.end();
+		return tables;
+	}
   }
 }
