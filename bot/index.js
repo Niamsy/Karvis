@@ -1,8 +1,8 @@
 'use strict';
 // Imports dependencies and set up http server
 
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh', connectionLimit: 5});
+/*const mariadb = require('mariadb');
+const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh', connectionLimit: 5});*/
 
 const
   express = require('express'),
@@ -136,7 +136,7 @@ function callSendAPI(sender_psid, response) {
   }); 
 }
  
-async function asyncFunction() {
+/*async function asyncFunction() {
   let conn;
   try {
     conn = await pool.getConnection();
@@ -148,4 +148,4 @@ async function asyncFunction() {
   } finally {
     if (conn) return conn.end();
   }
-}
+}*/
