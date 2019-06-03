@@ -89,7 +89,7 @@ app.get('/', (req, res) => {
 const PAGE_ACCESS_TOKEN = "EAAGkxCViuiYBADNKz5hiFJoat4fjV5ZAZBeLiR1gY7iA7eoBv2WWX7mYMT5kNjq2l6lx3xZCZBdASFHttZAOAIYDwIyD4nO4iZBEHzZAy1gWnmRyQ5D4P8DZBatrTjZBY1he3CA3AWAVEgQeXfYmqYdIbJ867GwBJ63OYGlO8RMdbQAUrzmF6knAT";
 
 // Handles messages events
-function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message) {
 
   if (hub.connectedUsersEntities[sender_psid] == null) {
     hub.connectedUsersEntities[sender_psid] = received_message.nlp.entities;
@@ -102,7 +102,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {
     // Create the payload for a basic text message
 	
-	var tables = asyncFunction();
+	var tables = await asyncFunction();
 console.log(received_message.nlp.entities.intent[0].value);
  if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value)!= -1)
  {
@@ -149,12 +149,13 @@ function callSendAPI(sender_psid, response) {
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({host: 'rds-mariadb-teasy.cjfzscpznbxa.ap-northeast-2.rds.amazonaws.com', user: 'eden', password: 'toto42sh',  connectionLimit: 5, database: 'karvis'});
 
-function asyncFunction() {
+async function asyncFunction() {
 	console.log("Beginning of MariaDB fnc");
   let conn;
   try {
-    conn = pool.getConnection();
-    const tables = conn.query("SELECT * FROM informations");
+    conn = await pool.getConnection();
+      var tables = await conn.query("SELECT * FROM informations");
+      console.log("TABLES = ");
     console.log(tables);
 	
   } catch (err) {
