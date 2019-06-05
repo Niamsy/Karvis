@@ -89,38 +89,38 @@ app.get('/', (req, res) => {
 const PAGE_ACCESS_TOKEN = "EAAGkxCViuiYBADNKz5hiFJoat4fjV5ZAZBeLiR1gY7iA7eoBv2WWX7mYMT5kNjq2l6lx3xZCZBdASFHttZAOAIYDwIyD4nO4iZBEHzZAy1gWnmRyQ5D4P8DZBatrTjZBY1he3CA3AWAVEgQeXfYmqYdIbJ867GwBJ63OYGlO8RMdbQAUrzmF6knAT";
 
 // Handles messages events
+
+function getUserIndex(sender_psid)
+{
+    for (var use in hub.connectedUsers) {
+        if (sender_psid === use.psid) {
+            return hub.connectedUsers.indexOf(use);
+        }
+    }
+    var user = {psid: sender_psid, restaurant_type: "", location: "", datetime: ""};
+    hub.connectedUsers.push(user);
+    return hub.connectedUsers.indexOf(user);
+}
+
 async function handleMessage(sender_psid, received_message) {
 
-	for (use in hub.connectedUsers)
-	{
-		if 
-	}
-  if (hub.connectedUsers[user.psid] == null) {
-    hub.connectedUsers[sender_psid] = received_message.nlp.entities;
-	var user = {psid:sender_psid, restaurant_type:"", location:"", datetime:""};
-	hub.connectedUsers.push(user);
-	
-  } else {
-    console.log("Known user with entities: " + JSON.stringify(hub.connectedUsers[sender_psid]));
-      // TODO: Add entities
-  }
+    var idx = getUserIndex(sender_psid);
+    console.log("USER CONNECTED :" + hub.connectedUsers[idx].psid);
+    let response;
+    if (received_message.text) {
+        // Create the payload for a basic text message
 
-  let response;
-  if (received_message.text) {
-    // Create the payload for a basic text message
-	
-	var tables = await asyncFunction();
-console.log(received_message.nlp.entities.intent[0].value);
- if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value)!= -1)
- {
-    response = {
-      "text": JSON.stringify(tables[2].details)
+        var tables = await asyncFunction();
+        console.log(received_message.nlp.entities.intent[0].value);
+        if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value) != -1) {
+            response = {
+                "text": JSON.stringify(tables[2].details)
+            }
+        }
     }
-  }
-  }  
-  
-  // Sends the response message
-  callSendAPI(sender_psid, response); 
+
+    // Sends the response message
+    callSendAPI(hub.connectedUsers[idx].psid, response);
 }
 
 // Handles messaging_postbacks events
