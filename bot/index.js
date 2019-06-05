@@ -91,11 +91,13 @@ const PAGE_ACCESS_TOKEN = "EAAGkxCViuiYBADNKz5hiFJoat4fjV5ZAZBeLiR1gY7iA7eoBv2WW
 // Handles messages events
 
 function getUserIndex(sender_psid) {
-    for (var use in hub.connectedUsers) {
-        if (sender_psid === use.psid) {
-            return hub.connectedUsers.indexOf(use);
-        }
+
+    for (var i = 0; i < hub.connectedUsers.length; ++i)
+    {
+	if (sender_psid === hub.connectedUsers[i].psid)
+	    return i;
     }
+    console.log("NEW USER!");
     var user = {psid: sender_psid, restaurant_type: "", location: "", datetime: "", intent:""};
     hub.connectedUsers.push(user);
     return hub.connectedUsers.indexOf(user);
@@ -137,11 +139,11 @@ function fillUser(idx, received_message) {
     try {
         if (hub.connectedUsers[idx].intent === "restaurant" || received_message.nlp.entities.intent[0].value === "restaurant") {
             if (received_message.nlp.entities.location != null)
-                hub.connectedUsers[idx].location = received_message.nlp.entities.location.value;
+                hub.connectedUsers[idx].location = received_message.nlp.entities.location[0].value;
             if (received_message.nlp.entities.restaurant_type != null)
-                hub.connectedUsers[idx].restaurant_type = received_message.nlp.entities.restaurant_type.value;
+                hub.connectedUsers[idx].restaurant_type = received_message.nlp.entities.restaurant_type[0].value;
             if (received_message.nlp.entities.datetime != null)
-                hub.connectedUsers[idx].datetime = received_message.nlp.entities.datetime.values[0].value;
+                hub.connectedUsers[idx].datetime = received_message.nlp.entities.datetime[0].values[0].value;
             hub.connectedUsers[idx].intent = "restaurant";
             return 0;
         }
@@ -156,7 +158,8 @@ async function handleMessage(sender_psid, received_message) {
     console.log("USER CONNECTED :" + hub.connectedUsers[idx].psid);
 
     var ret = fillUser(idx, received_message);
-    console.log("USER = " + hub.connectedUsers[idx].psid);
+    console.log("USER = ");
+    console.log(hub.connectedUsers[idx]);
     // Sends the response message
     callSendAPI(hub.connectedUsers[idx].psid, await createResponse(idx, received_message, ret));
 }
