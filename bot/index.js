@@ -103,6 +103,7 @@ function getUserIndex(sender_psid) {
 
 async function createResponse(idx, received_message, ret) {
     let response;
+    response = {"text":""}
     // intent not understood by wit.ai
     if (ret === -1) {
         response = {
