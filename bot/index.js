@@ -112,13 +112,15 @@ async function handleMessage(sender_psid, received_message) {
 
         var tables = await asyncFunction();
         console.log(received_message.nlp.entities.intent[0].value);
-        if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value) != -1) {
+       /* if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value) != -1) {
             response = {
                 "text": JSON.stringify(tables[2].details)
             }
-        }
+        }*/
     }
-
+    response = {
+        "text": "OUI"
+    }
     // Sends the response message
     callSendAPI(hub.connectedUsers[idx].psid, response);
 }
@@ -161,8 +163,8 @@ async function asyncFunction() {
   try {
     conn = await pool.getConnection();
       var tables = await conn.query("SELECT * FROM informations");
-      console.log("TABLES = ");
-    console.log(tables);
+      /*console.log("TABLES = ");
+    console.log(tables);*/
 	
   } catch (err) {
     throw err;
