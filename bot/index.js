@@ -18,7 +18,7 @@ app.post('/webhook', (req, res) => {
 
     let body = req.body;
 
-    11;rgb:0000/0000/0000// Checks this is an event from a page subscription
+    // Checks this is an event from a page subscription
     if (body.object === 'page') {
         console.log("BODY = " + body);
         // Iterates over each entry - there may be multiple if batched
