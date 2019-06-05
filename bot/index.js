@@ -96,7 +96,7 @@ function getUserIndex(sender_psid) {
             return hub.connectedUsers.indexOf(use);
         }
     }
-    var user = {psid: sender_psid, restaurant_type: "", location: "", datetime: ""};
+    var user = {psid: sender_psid, restaurant_type: "", location: "", datetime: "", intent:""};
     hub.connectedUsers.push(user);
     return hub.connectedUsers.indexOf(user);
 }
@@ -110,8 +110,12 @@ async function createResponse(idx, received_message, ret) {
         }
         return response;
     }
-
-    if (received_message.text) {
+    if (hub.connectedUsers[idx].restaurant_type === "")
+        response.text = "What kind of restaurant do you want ? 😋"
+    if (hub.connectedUsers[idx].location === "")
+        response.text = "Where do you want to eat ? 🗺"
+    if (hub.connectedUsers[idx].datetime === "")
+        response.text = "When do you want to eat? 🕔"
         // Create the payload for a basic text message
 
         //var tables = await asyncQuery();
@@ -121,7 +125,6 @@ async function createResponse(idx, received_message, ret) {
                  "text": JSON.stringify(tables[2].details)
              }
          }*/
-    }
     response = {
         "text": "OUI"
     }
@@ -130,14 +133,14 @@ async function createResponse(idx, received_message, ret) {
 
 function fillUser(idx, received_message) {
     try {
-        if (received_message.nlp.entities.intent[0].value == "restaurant") {
+        if (hub.connectedUsers[idx].intent === "restaurant" || received_message.nlp.entities.intent[0].value === "restaurant") {
             if (received_message.nlp.entities.location != null)
                 hub.connectedUsers[idx].location = received_message.nlp.entities.location.value;
             if (received_message.nlp.entities.restaurant_type != null)
                 hub.connectedUsers[idx].restaurant_type = received_message.nlp.entities.restaurant_type.value;
             if (received_message.nlp.entities.datetime != null)
                 hub.connectedUsers[idx].datetime = received_message.nlp.entities.datetime.values[0].value;
-
+            hub.connectedUsers[idx].intent = "restaurant";
             return 0;
         }
         return -1;
