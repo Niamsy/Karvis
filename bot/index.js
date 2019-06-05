@@ -18,7 +18,7 @@ app.post('/webhook', (req, res) => {
 
     let body = req.body;
 
-    // Checks this is an event from a page subscription
+    11;rgb:0000/0000/0000// Checks this is an event from a page subscription
     if (body.object === 'page') {
         console.log("BODY = " + body);
         // Iterates over each entry - there may be multiple if batched
@@ -106,7 +106,7 @@ async function createResponse(idx, received_message, ret) {
     // intent not understood by wit.ai
     if (ret === -1) {
         response = {
-            "text": "Sorry, I didn't understand, can you reformulate the question? :)"
+            "text": "Sorry, I didn't understand, can you reformulate the question?  🤖"
         }
         return response;
     }
@@ -146,14 +146,14 @@ function fillUser(idx, received_message) {
     }
 }
 
-function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message) {
     var idx = getUserIndex(sender_psid);
     console.log("USER CONNECTED :" + hub.connectedUsers[idx].psid);
 
     var ret = fillUser(idx, received_message);
 
     // Sends the response message
-    callSendAPI(hub.connectedUsers[idx].psid, createResponse(idx, received_message, ret));
+    callSendAPI(hub.connectedUsers[idx].psid, await createResponse(idx, received_message, ret));
 }
 
 // Handles messaging_postbacks events
@@ -162,7 +162,8 @@ function handlePostback(sender_psid, received_postback) {
 
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
-// Construct the message body
+    // Construct the message body
+    console.log("RESPONSE =" + response);
     let request_body = {
         "recipient": {
             "id": sender_psid
