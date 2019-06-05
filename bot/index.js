@@ -113,10 +113,12 @@ async function createResponse(idx, received_message, ret) {
     }
     if (hub.connectedUsers[idx].restaurant_type === "")
         response.text = "What kind of restaurant do you want ? 😋"
-    if (hub.connectedUsers[idx].location === "")
+    else if (hub.connectedUsers[idx].location === "")
         response.text = "Where do you want to eat ? 🗺"
-    if (hub.connectedUsers[idx].datetime === "")
+    else if (hub.connectedUsers[idx].datetime === "")
         response.text = "When do you want to eat? 🕔"
+    else
+        response.text = "I found your restaurant : [DB]";
         // Create the payload for a basic text message
 
         //var tables = await asyncQuery();
@@ -125,10 +127,9 @@ async function createResponse(idx, received_message, ret) {
              response = {
                  "text": JSON.stringify(tables[2].details)
              }
-         }*/
-    response = {
-        "text": "OUI"
-    }
+         }
+
+    }*/
     return response;
 }
 
