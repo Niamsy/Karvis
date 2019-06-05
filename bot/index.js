@@ -156,7 +156,7 @@ async function handleMessage(sender_psid, received_message) {
     console.log("USER CONNECTED :" + hub.connectedUsers[idx].psid);
 
     var ret = fillUser(idx, received_message);
-
+    console.log("USER = " + hub.connectedUsers[idx].psid);
     // Sends the response message
     callSendAPI(hub.connectedUsers[idx].psid, await createResponse(idx, received_message, ret));
 }
