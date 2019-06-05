@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 const app = express().use(bodyParser.json()); // creates express http server
 
-hub.connectedUsersEntities = [];
+hub.connectedUsers = [];
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -91,10 +91,17 @@ const PAGE_ACCESS_TOKEN = "EAAGkxCViuiYBADNKz5hiFJoat4fjV5ZAZBeLiR1gY7iA7eoBv2WW
 // Handles messages events
 async function handleMessage(sender_psid, received_message) {
 
-  if (hub.connectedUsersEntities[sender_psid] == null) {
-    hub.connectedUsersEntities[sender_psid] = received_message.nlp.entities;
+	for (use in hub.connectedUsers)
+	{
+		if 
+	}
+  if (hub.connectedUsers[user.psid] == null) {
+    hub.connectedUsers[sender_psid] = received_message.nlp.entities;
+	var user = {psid:sender_psid, restaurant_type:"", location:"", datetime:""};
+	hub.connectedUsers.push(user);
+	
   } else {
-    console.log("Known user with entities: " + JSON.stringify(hub.connectedUsersEntities[sender_psid]));
+    console.log("Known user with entities: " + JSON.stringify(hub.connectedUsers[sender_psid]));
       // TODO: Add entities
   }
 
@@ -118,7 +125,6 @@ console.log(received_message.nlp.entities.intent[0].value);
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
-
 }
 
 // Sends response messages via the Send API
