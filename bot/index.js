@@ -120,31 +120,34 @@ async function createResponse(idx, received_message, ret) {
     else if (hub.connectedUsers[idx].datetime === "")
         response.text = "When do you want to eat? 🕔"
     else {
-        var query;
+        var str;
         var date = new Date(hub.connectedUsers[idx].datetime);
         if (date.getHours() >= 7 && date.getHours() <= 11)
         {
-            query = await asyncQuery("SELECT details, website,lat,lng FROM informations " +
+             str = "SELECT details, website,lat,lng FROM informations " +
                 "WHERE informations.keywords LIKE '%" + hub.connectedUsers[idx].restaurant_type +
                 "%' AND informations.keywords LIKE '%" + hub.connectedUsers[idx].location +
-                "%' AND (informations.keywords LIKE '%morning%' OR informations.keywords LIKE '%all-day%')");
+                "%' AND (informations.keywords LIKE '%morning%' OR informations.keywords LIKE '%all-day%')";
         }
         else if (date.getHours() >= 11 && date.getHours() <= 15)
         {
-            query = await asyncQuery("SELECT details, website,lat,lng FROM informations " +
+            str = "SELECT details, website,lat,lng FROM informations " +
                 "WHERE informations.keywords LIKE '%" + hub.connectedUsers[idx].restaurant_type +
                 "%' AND informations.keywords LIKE '%" + hub.connectedUsers[idx].location +
-                "%' AND (informations.keywords LIKE '%midday%' OR informations.keywords LIKE '%mid-day%' OR informations.keywords LIKE '%all-day%')");
+                "%' AND (informations.keywords LIKE '%midday%' OR informations.keywords LIKE '%mid-day%' OR informations.keywords LIKE '%all-day%')";
         }
         else if (date.getHours() >= 15 && date.getHours() <= 23)
         {
-            query = await asyncQuery("SELECT details, website,lat,lng FROM informations " +
+            str = "SELECT details, website,lat,lng FROM informations " +
                 "WHERE informations.keywords LIKE '%" + hub.connectedUsers[idx].restaurant_type +
                 "%' AND informations.keywords LIKE '%" + hub.connectedUsers[idx].location +
-                "%' AND (informations.keywords LIKE '%all-day%' OR informations.keywords LIKE '%mid-day%')");
+                "%' AND (informations.keywords LIKE '%all-day%' OR informations.keywords LIKE '%mid-day%')";
         }
+        var query = asyncQuery(str);
         console.log("query is ");
         console.log(query);
+        if (query[0].details == null)
+            response.text = "Sorry, it seems that there are no results for your research\nMaybe try something else ! :)";
         if (query[0].website != null)
             response.text = "" + query[0].details + "\nHere is the address of your restaurant : " + "https://www.google.fr/maps/search/"+ query[0].lat + "+" + query[0].lng + "\n Here is the restaurant's website for more informations : " + query[0].website + "\nWe hope you will enjoy your meal\n Thanks for using Karvis";
         else
