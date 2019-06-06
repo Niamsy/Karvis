@@ -143,12 +143,12 @@ async function createResponse(idx, received_message, ret) {
                 "%' AND informations.keywords LIKE '%" + hub.connectedUsers[idx].location +
                 "%' AND (informations.keywords LIKE '%all-day%' OR informations.keywords LIKE '%mid-day%')";
         }
-        var query = asyncQuery(str);
+        var query = await asyncQuery(str);
         console.log("query is ");
         console.log(query);
-        if (query[0].details == null)
+        if (query[0] == null)
             response.text = "Sorry, it seems that there are no results for your research\nMaybe try something else ! :)";
-        if (query[0].website != null)
+        else if (query[0].website != null)
             response.text = "" + query[0].details + "\nHere is the address of your restaurant : " + "https://www.google.fr/maps/search/"+ query[0].lat + "+" + query[0].lng + "\n Here is the restaurant's website for more informations : " + query[0].website + "\nWe hope you will enjoy your meal\n Thanks for using Karvis";
         else
             response.text = "" + query[0].details + "\nHere is the address of your restaurant : " + "https://www.google.fr/maps/search/"+ query[0].lat + "+" + query[0].lng + "\n We hope you will enjoy your meal\n Thanks for using Karvis";
