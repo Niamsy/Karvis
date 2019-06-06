@@ -146,22 +146,14 @@ async function createResponse(idx, received_message, ret) {
         console.log("query is ");
         console.log(query);
         if (query[0].website != null)
-            response.text = query[0].details + "\nHere is the address of your restaurant : " + "https://www.google.fr/maps/search/"+ query[0].lat + "+" + query[0].lng + "\n Here is the restaurant's website for more informations : " + query[0].website + "\nWe hope you will enjoy your meal\n Thanks for using Karvis";
+            response.text = "" + query[0].details + "\nHere is the address of your restaurant : " + "https://www.google.fr/maps/search/"+ query[0].lat + "+" + query[0].lng + "\n Here is the restaurant's website for more informations : " + query[0].website + "\nWe hope you will enjoy your meal\n Thanks for using Karvis";
         else
-            response.text = query[0].details + "\nHere is the address of your restaurant : " + "https://www.google.fr/maps/search/"+ query[0].lat + "+" + query[0].lng + "\n We hope you will enjoy your meal\n Thanks for using Karvis";
-
+            response.text = "" + query[0].details + "\nHere is the address of your restaurant : " + "https://www.google.fr/maps/search/"+ query[0].lat + "+" + query[0].lng + "\n We hope you will enjoy your meal\n Thanks for using Karvis";
+        hub.connectedUsers[idx].datetime = "";
+        hub.connectedUsers[idx].location = "";
+        hub.connectedUsers[idx].restaurant_type = "";
+        hub.connectedUsers[idx].intent = "";
     }
-        // Create the payload for a basic text message
-
-        //var tables = await asyncQuery();
-        //console.log(received_message.nlp.entities.intent[0].value);
-        /* if (JSON.parse(tables[2].keywords).tags.indexOf(received_message.nlp.entities.intent[0].value) != -1) {
-             response = {
-                 "text": JSON.stringify(tables[2].details)
-             }
-         }
-
-    }*/
     return response;
 }
 
