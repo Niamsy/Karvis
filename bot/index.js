@@ -119,8 +119,26 @@ async function createResponse(idx, received_message, ret) {
         response.text = "Where do you want to eat ? 🗺"
     else if (hub.connectedUsers[idx].datetime === "")
         response.text = "When do you want to eat? 🕔"
-    else
-        response.text = "I found your restaurant : [DB]";
+    else {
+        var query;
+        if (hub.connectedUsers[idx].datetime >= 10 && hub.connectedUsers[idx].datetime <= 15)
+        {
+            query = await asyncQuery("SELECT details, website,lat,lng FROM informations " +
+                "WHERE informations.keywords LIKE '%" + hub.connectedUsers[idx].restaurant_type +
+                "%' AND informations.keywords LIKE '%" + hub.connectedUsers[idx].location +
+                "%' AND (informations.keywords LIKE '%midday%' OR informations.keywords LIKE '%mid-day%' OR informations.keywords LIKE '%all-day%')");
+        }
+        else
+        {
+            query = await asyncQuery("SELECT details, website,lat,lng FROM informations " +
+                "WHERE informations.keywords LIKE '%" + hub.connectedUsers[idx].restaurant_type +
+                "%' AND informations.keywords LIKE '%" + hub.connectedUsers[idx].location +
+                "%' AND informations.keywords LIKE '%all-day%'");
+        }
+        console.log("query is ");
+        console.log(query);
+        response.text = "";
+    }
         // Create the payload for a basic text message
 
         //var tables = await asyncQuery();
